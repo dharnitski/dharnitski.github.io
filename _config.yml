@@ -24,6 +24,8 @@ github_username:  dharnitski
 
 # custom
 google_analytics: UA-92788529-1
+disqus:
+    shortname: dharnitski.com
 
 # Build settings
 markdown: kramdown
