@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "My old posts at Jocks to the Core"
+title:  "My posts at Jocks to the Core"
 categories: 
 tags: tag1 tag2 tag3
 ---
