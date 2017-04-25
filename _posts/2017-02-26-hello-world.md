@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Hello World!"
-date:   2017-02-25 21:37:27 -0500
 categories: 
+tags: tag1 tag2 tag3
 ---
-hello world
+hello world1
