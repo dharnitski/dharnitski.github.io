@@ -2,7 +2,8 @@
 layout: post
 title:  "My posts at Jocks to the Core"
 categories: 
-tags: tag1 tag2 tag3
+tags: Sitecore Security Debug
+excerpt: "Links to my posts in previous blog"
 ---
 
 [Multiplatform Development for Sitecore](http://jockstothecore.com/multiplatform-sitecore-development/)
