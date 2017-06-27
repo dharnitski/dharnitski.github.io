@@ -3,32 +3,30 @@ layout: post
 title:  Go on AWS CodeBuild beyond Hello World
 categories: 
 tags: Go AWS CodeBuild DevOps
-excerpt: "CodeBuild is an AWS managed build service. Out of the box it supports many programming languages including Java, Node, Python, Ruby and Golang. AWS provides good documentation and samples for different frameworks to get developers up to speed. I currently use Golang on my working place and want to see how CodeBuild works with Go ecosystem. I am going to start with simple hello-world project and later make it more complicated to see how CodeBuild deals with dependencies and nested packages."
+excerpt: "CodeBuild is an AWS managed build service. Out of the box it supports many programming languages including Java, Node, Python, Ruby and Golang. AWS provides good documentation and samples for different frameworks to get developers up to speed. I currently use Golang on my machine. Let me show you how CodeBuild works with Go ecosystem. I will start with a simple hello-world project and later will make it more complicated to demonstrate how CodeBuild deals with dependencies and nested packages."
 ---
 
-AWS CodeBuild supports many programming languages. Amazon recommends to use pre-configured and optimized Docker images that can be found on [this page](http://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref.html). Check that page to see what is available right now. In June 2017 there was support for Golang versions 1.5, 1.6 and 1.7. If you do not see required framework in that list, you can install required components during `install` build phase. For more information, see [Build Spec Example](http://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html#build-spec-ref-example).
+AWS CodeBuild supports many programming languages. For each Amazon recommends to use pre-configured and optimized Docker images that can be found in AWS documentation. Check [this page](http://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref.html) to see what is currently available. At the moment I am writing this post (June 2017) it supports Golang versions 1.5, 1.6 and 1.7. If you do not see required framework in that list, you can add custom components during `install` build phase. For more information, see [Build Spec Example](http://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html#build-spec-ref-example).
 
- [AWS CodeBuild Samples](http://docs.aws.amazon.com/codebuild/latest/userguide/samples.html) page contains sample for different languages. As you can see, it includes [Go Hello World Sample for AWS CodeBuild](http://docs.aws.amazon.com/codebuild/latest/userguide/sample-go-hw.html). That article describes how to build simple Go project. It is pretty straightforward - you manually upload source code and build definition to S3 bucket, CodeBuild pulls code from that bucket, starts Docker container with pre-installed GO v1.7.3, builds the code and deploys generated artifact to another S3 bucket.
+ [AWS CodeBuild Samples](http://docs.aws.amazon.com/codebuild/latest/userguide/samples.html) page contains samples for different languages.   [A sample for Go](http://docs.aws.amazon.com/codebuild/latest/userguide/sample-go-hw.html) describes how to build a simple Go project. It is pretty straightforward - you manually upload a source code and build definition to S3 bucket, CodeBuild pulls the code from the bucket, launches a Docker container with pre-installed GO v1.7.3, builds the code and deploys a generated artifact to another S3 bucket.
 
-I am not going to add much here. Everything works as it should if you follow page instructions. In 30 min you should get everything setup, code compiled and deployed. 
+If you follow page instructions, in 30 min you will get everything setup, and will have a compiled and deployed code. 
 
-Next step is optional. You can continue use CodeBuild using S3 bucket, but without much effort you can connect CodeBuild to your source control repository. Again, I am not going to describe that in details, AWS has good [setup documentation for that process](http://docs.aws.amazon.com/codebuild/latest/userguide/how-to-create-pipeline.html#how-to-create-pipeline-add-test). 
+ You can continue working with CodeBuild using S3 bucket, but without much effort you can also connect CodeBuild to your source control repository. AWS has good [setup documentation for this process](http://docs.aws.amazon.com/codebuild/latest/userguide/how-to-create-pipeline.html#how-to-create-pipeline-add-test). 
 
-AWS has lots of advantages, but it wold be not fair to skip some areas where lightweight build tools like [Travis CI](https://travis-ci.org/) or [Circle CI](https://circleci.com/) do better work:
+This sample proves that AWS does work, but it wold be not fair to skip some areas where lightweight build tools like [Travis CI](https://travis-ci.org/) or [Circle CI](https://circleci.com/) do better job:
 
-* With CodePipeline there is about 30 sec delay between my GitHub commit push and pipeline start. The story is the same if code is moved to AWS CodeCommit. These days developers expect that CI system uses push notifications and starts builds immediately.
-* It would be great if build results are pushed to GitHub. Many other CI systems do that out of the box.
-* Build Process itself can be faster for such simple project. When I measured the time, Docker image provisioning took 1 min 17 secs and compilation took 28 seconds.
+* Nowadays many CI systems use push notifications and start builds immediately where when building With AWS CodePipeline there is about 30 sec delay between my GitHub commit push and pipeline start. The story is the same if code is moved to AWS CodeCommit. 
+* It is also common across other systems to push build results to GitHub. 
+* Build Process in mentioned CI systems is faster for such a simple project. When I measured the time, Docker image provisioning for AWS took 1 min 17 secs and compilation took 28 seconds.
 
-But let's continue, we just proved that Hello World works, now it is time to check something more complicated.
+Anyway, we can continue. We just proved that Hello World works, now it is time to check something more complicated.
 
 ## Custom Packages
 
-Hello World sample contains only one file - `main.go` and does not use any dependencies. Lets check what will happen if we add custom package to the project. 
+The Hello World sample contains only one file - `main.go` and does not use any dependencies. To see how it works with custom packages,  let's extend our sample with a function that returns the main region for given language. In Go this functionality is available in `golang.org/x/text/language` package.
 
-Let's extend our sample to build application that takes language and returns region where that language is used.
-
-Run `go get golang.org/x/text/language` to install package and update code to use it:  
+Run `go get golang.org/x/text/language` to install the package and update the code as shown below to use the package:  
 
 ```go
 package main
@@ -44,7 +42,7 @@ func main() {
 	fmt.Println(en.Region())
 }
 ```
-Everything works fine locally with that change, but process fails when we try to build the code in CodeBuild:
+Everything works fine locally, but the build process fails when we try to build the code in CodeBuild:
 
 ```
 hello.go:6:2: cannot find package "golang.org/x/text/language" in any of
@@ -54,32 +52,30 @@ hello.go:6:2: cannot find package "golang.org/x/text/language" in any of
 
 What is going on?
 
-Build process tries to compile source files in bare Go docker container. Our custom package installed locally, but it is not installed in image used by CodeBuild. 
+The Build process compiles source files in a standard Go docker container. After our last change the source code requires the custom package which is installed locally, but it is not installed in an image used by CodeBuild. 
 
-Lets fix the problem.
+Let's fix the problem.
 
-One way to make build green again is to use package manager like [glide](https://glide.sh/) or [dep](https://github.com/golang/dep). At the moment I am writing this post (June 2017) `dep` is confirmed to be official Go tool, but final version is not release yet. 
+One way to make the build green again is to use the package manager tools like [glide](https://glide.sh/) or [dep](https://github.com/golang/dep). At the moment I am writing this post (June 2017) `dep` is confirmed to be an official Go tool, but the final version is not released yet. 
 
-Both tools install custom packages into project `vendor` folder and these packages are committed into source control. After that, any tool uses files directly from local folder without necessity to call `go get`.
+Both tools install custom packages into the project `vendor` folder and these packages are committed into the source control. After that, any tool will use files directly from the `vendor` folder folder without necessity to call `go get`.
 
-Another option is to use good old `go get` tool during `install` build phase on build agent. 
+The other option is to use a good old `go get` tool during `install` build phase on a build agent. 
 
-Let's try that approach.
-
-Update `buildspec.yaml` to include additional command:
+To try the last approach, Update `buildspec.yaml` to include additional command:
 
 ```yml
   install: 
     commands:
       - go get golang.org/x/text/language
 ```
-Build is green now and we are ready for new challenges.
+It will make the build green. Now we are ready for new challenges.
 
 ## Sub-packages in Project 
 
-Small project can keep all units in one folder. It make sense to add some structure when project grow. project structure in Go defined using packages. Every package stores files to address particular domain or layer. 
+For a small project like Hello World you can keep all units in one folder. When the project grows, a more organized structure will be needed.   The project structure in Go is defined with packages. Every package stores files to address particular domain or layer. 
 
-We are going to create package called `service`, move our code and use `service` from `main` package.
+We will create the package called `service`, move our code there and will use `service` package in the `main` package.
 
 Add `service/regions.go` file:
 
@@ -96,7 +92,7 @@ func Find(lang string) (language.Region, language.Confidence) {
 	return en.Region()
 }
 ```
-Update main file to use new package:
+Update the main file to use a new package:
 
 ```go
 package main
@@ -112,11 +108,9 @@ func main() {
 }
 ```
 
-Console still shows `BY Low` when we run this code.
+The Console will show `BY Low` when you run this code locally.
 
-Now it is time to buind the code using CodeBuild. 
-
-Build server does not like it:
+But when you build the same code using CodeBuild, the build server does not like it:
 
 ```
 cannot find package "github.com/dharnitski/golang-codebuild/service" in any of: 
@@ -124,7 +118,7 @@ cannot find package "github.com/dharnitski/golang-codebuild/service" in any of:
 /go/src/github.com/dharnitski/golang-codebuild/service (from $GOPATH)
 ```
 
-I added add two lines to `buildspec.yml` file to see why build fails:
+To troubleshoot, add two lines to `buildspec.yml` file to see why build fails:
 
 ```yml
       - echo CODEBUILD_SRC_DIR - $CODEBUILD_SRC_DIR
@@ -136,22 +130,24 @@ When you check logs you should see something like this:
     CODEBUILD_SRC_DIR - /tmp/src469578921/src
     GOPATH - /go
 
-CodeBuild gets the code and drops it into unique location for every build. That path is defined in `$CODEBUILD_SRC_DIR` variable. Variable is available at build time, so you can build scripts to work with files. 
+CodeBuild gets the code and drops it into a unique location for every build. That path is defined in `$CODEBUILD_SRC_DIR` variable. The variable is available at the build time, so you can build scripts to work with files. 
 
-This implementation is fine for many languages, as long as these languages do have special requirements where source files should be stored. Go is not one of such languages, it assumes that files located in workspace direction under `$GOPATH`.
+This implementation is fine for many languages, as long as these languages do not have special requirements where source files should be stored. Go is not one of such languages, it assumes that files are located in the workspace direction under `$GOPATH`.
 
-Unfortunately, CodeBuild does not provide control over source code drop location. `$CODEBUILD_SRC_DIR` variable is provided for reference and cannot be reassigned. To fix compilation error we have to copy files into right location. The best place for this action is `install` build phase. This is how we can copy files using `mkdir` and `cp`:
+Unfortunately, CodeBuild does not provide control over the source code drop location. The `$CODEBUILD_SRC_DIR` variable shows where the files are dropped but it cannot be reassigned. 
+
+To fix the compilation error shown above we have to copy files into the right location. The best place for this action is `install` build section. Use `mkdir` and `cp` to copy files:
 
       mkdir -p ${GOPATH}/src/${PACKAGE}
       cp -a ${CODEBUILD_SRC_DIR}/.  ${GOPATH}/src/${PACKAGE}
 
-After files copied, we can use Go tools to compile code. 
+After files are copied, we can use Go tools to compile the code. 
 
-There is one nuance though that we need to remember. CodeBuild runs every command in a separate shell against the root of source code folder. That means that we cannot simply run `go buid` because it will be executed against original source code location. We also cannot set `cd` once and use it later, because every new command executed in its own context. We have to set current dir every time when we want to run command against files in `$GOPATH` folder.
+There is one caveat to that. CodeBuild runs every command in a separate shell against the root of the source code folder. That means that we cannot simply run `go build` as it will be executed against the original source code location. We also cannot set `cd` once and use it later, because every new command is executed in its own context. We have to set the current dir every time when we want to run the command against files in `$GOPATH` folder.
 
-Keeping files in right location has one additional benefit. Now we can use `go xxx ./...` commands to address all sub-packages in one command.   
+Keeping files in the right location has one additional benefit. Now we can use `go xxx ./...` pattern to execute the command against all sub-packages recursively.   
 
-This is final version of `buildspec.yml` that includes all tricks we just discussed:
+This is a final version of `buildspec.yml` that includes all tricks we just discussed:
 
 ```yml
 version: 0.1
@@ -184,8 +180,8 @@ artifacts:
     - application
 ```
 
-With this file we copy sources to right location, install dependencies, compile the code and save generated artifact.
+The file above copies sources to the right location, installs dependencies, compiles the code and saves the generated artifact.
 
-Full version of code can be found in [https://github.com/dharnitski/golang-codebuild](https://github.com/dharnitski/golang-codebuild).
+The Full version of the code can be found at [https://github.com/dharnitski/golang-codebuild](https://github.com/dharnitski/golang-codebuild).
 
 Happy coding!
