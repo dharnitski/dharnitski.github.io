@@ -5,4 +5,4 @@ categories:
 tags:
 excerpt: "Hello World!"
 ---
-My first post in a new blog. 
+My first post in a new blog.

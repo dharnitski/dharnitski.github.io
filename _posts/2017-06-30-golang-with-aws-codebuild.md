@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  Go on AWS CodeBuild beyond Hello World
-categories: 
+categories:  
 tags: Go AWS CodeBuild DevOps
 excerpt: "CodeBuild is an AWS managed build service. Out of the box it supports many programming languages including Java, Node, Python, Ruby and Golang. AWS provides good documentation and samples for different frameworks to get developers up to speed. I currently use Golang on my machine. Let me show you how CodeBuild works with Go ecosystem. I will start with a simple hello-world project and later will make it more complicated to demonstrate how CodeBuild deals with dependencies and nested packages."
 ---
