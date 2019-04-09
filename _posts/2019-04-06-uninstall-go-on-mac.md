@@ -3,7 +3,7 @@ layout: post
 title: "Uninstall Go on macOS"
 categories: 
 tags: Go Setup
-excerpt: After working for several years on different Go version and using variety of different tools it is time to reset my system to "clean" state. Just to be clear, my machine works just fine after updating Go version several times. It is just perfectionist inside me wants to remove stuff that is not in use anymore.
+excerpt: After working for several years on different Go versions and using variety of different tools it is time to reset my system to "clean" state. Just to be clear, my machine works just fine, it is just perfectionist inside me wants to remove stuff that is not in use anymore.
 ---
 ## Check if Go is installed
 
@@ -38,7 +38,7 @@ Command below uninstalls Dep and Go if it was installed using `brew`:
 
 Homebrew cleanups `$PATH` and other config files. No extra steps are necessary if Go was never installed using different options.
 
-> tip: `brew` keeps Go files in `/usr/local/Cellar/go/` folder  
+> tip: `brew` keeps Go files in `/usr/local/Cellar/go/x.x.x/` folder  
 
 ## If Go installed using macOS package
 
