@@ -15,7 +15,7 @@ We will use `brew` to install software. Follow instructions on [Homebrew](https:
 
 Homebrew provides two benefits comparing to official Go distribution package:
 
-* Package includes scripts for uninstalling and simplify system clean up as described in [post]({{ site.baseurl }}{% post_url 2019-04-06-uninstall-go-on-mac %})
+* Package includes scripts for uninstalling and simplify system clean up as described in this [post]({{ site.baseurl }}{% post_url 2019-04-06-uninstall-go-on-mac %})
 * Every Go version is installed into individual folder. That really helps if we switching between versions.
 
 Run this command line to install Go:
