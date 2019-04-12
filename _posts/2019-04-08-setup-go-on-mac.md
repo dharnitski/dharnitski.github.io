@@ -28,6 +28,28 @@ Go binary distribution is installed now. It can be tested by checking Go version
 
 > **tip**: Restart your terminal window
 
+## Create workspace
+
+A workspace is a directory hierarchy with two directories at its root:
+
+* `src` contains Go source files
+* `bin` contains executable commands.
+
+The `go` tool builds and installs binaries to the `bin` directory.
+
+Most Go programmers keep all their Go source code and dependencies in a single workspace.
+
+> **tip**: Default workspace location on macOS is `$HOME/go`
+
+Create workspace's `src` and `bin` directories:
+
+    mkdir -p $(go env GOPATH)/src
+    mkdir -p $(go env GOPATH)/bin
+
+Add the workspace's `bin` subdirectory to your `$PATH`:
+
+    export PATH=$PATH:$(go env GOPATH)/bin
+
 ## Install critical Go packages
 
 At the moment of writing this post, [Go Modules](https://github.com/golang/go/wiki/Modules) are not finally released. That is why we install [Go dep](https://github.com/golang/dep) dependency management tool. You may not need this step if you are using Go Modules.
