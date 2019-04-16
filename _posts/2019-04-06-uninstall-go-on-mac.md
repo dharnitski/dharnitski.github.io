@@ -3,7 +3,7 @@ layout: post
 title: "Uninstall Go on macOS"
 categories: 
 tags: Go Setup
-excerpt: After working for several years on different Go versions and using variety of different tools it is time to reset my system to "clean" state. Just to be clear, my machine works just fine, it is just perfectionist inside me wants to remove stuff that is not in use anymore.
+excerpt: After working for several years on different Go versions and using variety of different tools it is time to reset my system to the "clean" state. Just to be clear, my machine works just fine, it is a perfectionist inside me who wants to remove stuff that is not in use anymore.
 ---
 ## Check if Go is installed
 
@@ -21,13 +21,13 @@ Default value is `/usr/local/bin/go`.
 
 ## Go installation options
 
-There are multiple ways to setup Go dev environment. Developer can pick option that provides more flexibility or more simplicity. Flexibility presented by packaged Go binaries that can be  [.darwin-amd64.tar.gz archive](https://golang.org/dl/) when simplicity achieved with package management tools like [Homebrew](https://brew.sh/). Option in between is [.darwin-amd64.pkg macOS package installer](https://golang.org/dl/)
+There are multiple ways to setup Go dev environment. Developer can pick an option that provides more flexibility or more simplicity. Flexibility is presented by packaged Go binaries [.darwin-amd64.tar.gz archive](https://golang.org/dl/) when simplicity is achieved with package management tools like [Homebrew](https://brew.sh/). An option in between is [.darwin-amd64.pkg macOS package installer](https://golang.org/dl/)
 
-What is important to understand is that you can have several versions of Go installed on machine using several different methods. In that case, there is no single solution to uninstall all these versions and multiple places to be checked.
+What is important to understand is that you can have several versions of Go installed on machine using several different methods. In that case, there is no single solution to uninstall all these versions and multiple places need to be checked.
 
 ## If Go installed using Homebrew
 
-Homebrew is a smart package manager that is capable to clean up after after himself.
+Homebrew is a smart package manager that is capable of cleaning up after itself.
 
 It is recommended to use built-in `uninstall` command if Go was installed using `brew`.
 
@@ -36,18 +36,18 @@ Command below uninstalls Dep and Go if it was installed using `brew`:
     brew uninstall dep
     brew uninstall go
 
-Homebrew cleanups `$PATH` and other config files. No extra steps are necessary if Go was never installed using different options.
+Homebrew cleans up `$PATH` and other config files. No extra steps are necessary if Go was never installed using different options.
 
 > tip: `brew` keeps Go files in `/usr/local/Cellar/go/x.x.x/` folder  
 
 ## If Go installed using macOS package
 
-Run command line to see if Go was installed using macOS package
+Run the command line to see if Go was installed using macOS package
 
     pkgutil --pkgs
 
 Go macOS package is presented as `com.googlecode.go` in result list.
-macOS package stores files in predefined location. For Go version 1.12 these are the files to be deleted:
+macOS package stores files in the predefined location. For Go version 1.12 these are the files to be deleted:
 
 * file `/etc/paths.d/go`
 * folder `usr/local/go`

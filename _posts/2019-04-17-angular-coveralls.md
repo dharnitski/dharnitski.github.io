@@ -3,11 +3,11 @@ layout: post
 title: "Angular code coverage using CircleCI and Coveralls"
 categories: 
 tags: Angular TDD Coveralls CircleCI
-excerpt: Step by steps instruction how to enable Code Coverage check for you Angular CI pipeline.   
+excerpt: Step by step instructions how to enable Code Coverage check for your Angular CI pipeline.   
 ---
 ## Hello Angular
 
-Angular out of the box packed with great tools and templates to scaffold a new project in a few minutes.
+Angular out of the box is packed with great tools and templates to scaffold a new project in a few minutes.
 
 Install Angular CLI if you do not have it yet using instructions from [CLI Command Reference](https://angular.io/cli).
 
@@ -17,7 +17,7 @@ Create a new project:
     cd angular-hello-world
     ng test --watch=false --code-coverage
 
-Last command runs unit tests included into scaffolded project and calculates code coverage.
+Last command runs unit tests included into the scaffolded project and calculates code coverage.
 
 You should see something like output below if everything was done right:
 

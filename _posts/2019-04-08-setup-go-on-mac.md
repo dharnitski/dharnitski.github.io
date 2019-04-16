@@ -3,7 +3,7 @@ layout: post
 title: "Setup Go Dev environment on macOS"
 categories: 
 tags: Go Setup vscode TDD
-excerpt: This posts is not intended to provide comprehensive instructions and answer all the questions. Instead, it describes what works for me and at the end you will have production ready Go environment enabled for TDD. 
+excerpt: This post is not intended to provide comprehensive instructions and answers to all the questions related to the topic. Instead, it describes what works for me and how you can achieve production ready Go environment enabled for TDD. 
 ---
 ## Prerequisites
 
