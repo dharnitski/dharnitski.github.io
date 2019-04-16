@@ -12,8 +12,10 @@ For MacOS:
 
 ## Build and run the blog locally
 
-    bundle exec jekyll serve
+Script to start blog with debug info and unpublished posts:
 
-Open in Browser:
+    bundle exec jekyll serve --verbose --trace --drafts --future
+
+Open link in Browser:
 
     http://127.0.0.1:4000/
