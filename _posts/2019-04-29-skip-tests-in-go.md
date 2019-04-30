@@ -7,9 +7,9 @@ excerpt: Different types of tests require different schedules. We run tests for 
 ---
 ## Run all the tests
 
-Before we dive into managing tests let's remind how to run the test in GO.
+Before we dive into managing tests, let's remind how to run the test in GO.
 
-This command line runs all the tess in all project packages:
+This command line runs all the tests in all project packages:
 
     go test ./...
 
@@ -17,7 +17,7 @@ VS Code with [Go plugin](https://code.visualstudio.com/docs/languages/go) provid
 
 ## Run tests for current package
 
-We can control which tests to run by scoping them by package.
+We can control what tests to run by running them inly for current package.
 
 Run tests in current package:
 
@@ -27,11 +27,11 @@ Another option to do the same is to use `.` (dot) to point to current folder:
 
     go test .
 
-With VS Code we can run tests in current package upon file save event. Check [Environment Setup]({{ site.baseurl }}{% post_url 2019-04-08-setup-go-on-mac %}) instructions to see how to properly configure it if you practice TDD.
+With VS Code we can trigger tests run in current package for file save event. Check [Environment Setup]({{ site.baseurl }}{% post_url 2019-04-08-setup-go-on-mac %}) instructions to see how to configure that hook.
 
 ## Run tests for specific package
 
-There are two ways to run package tests. One way is to use file system relative path to package folder. Second option is full package name.
+There are two ways to specify package you want to. One way is to use file system relative path that points to package folder. Second option is full package name.
 
 This is how you can test specific package from command line:
 
@@ -51,9 +51,9 @@ It is also possible to combine package paths and names:
 
 Often we want to separate short and long tests and `test` Go command supports `-short` flag built specifically for this purpose.
 
-It is a little bit counter intuitive because we have to use flag called `-short` to exclude long tests, so let's talk about how that flag works.
+It is a little bit counterintuitive because we have to use flag called `-short` to exclude long tests, so let's talk about how that flag works.
 
-Go implements logic below for `-short` flag:
+Go implements logic for `-short` flag as follows:
 
 * Flag is **not set** - run **long and short** tests
 * `-short` slag is **set** - run **only short** tests
@@ -97,7 +97,7 @@ func TestEnvVar(t *testing.T) {
 }
 ```
 
-ENV variable can be set globally or run command with local variable:
+ENV variable can be set globally or yiu can run command with local variable:
 
     TEST_WIP=true go test -v
 
@@ -144,15 +144,15 @@ func TestFoo(t *testing.T) {
 }
 ```
 
-Constrains are injected into GO using `-tags` command line argument. String below injects `sql` constrain into test command:
+Constrains are injected into GO using `-tags` flag. String below injects `sql` constrain into test command:
 
     go test ./... -tags=sql
 
-Command line above runs test for files without and with `// +build sql` constrain.
+Files with `// +build sql` constrain compiled and tested only if go command runs with `-tags=sql` flag as shown above.
 
-Although, if we run `go test ./...` (withoiut `sql` tag) our file is not compiled and tests are not executed.
+Constrains syntax allows to use negative expressions and combine them using AND and OR operators. 
 
-Constrains syntax allows to use negative expressions and combine them using AND and OR operators:
+For example:
 
     // +build linux,386 darwin,!cgo
 
@@ -160,7 +160,7 @@ corresponds to the boolean formula:
 
     (linux AND 386) OR (darwin AND (NOT cgo))
 
-You can find information how to configure VS Code to enable testing constrains in my another post [Setup Go Dev environment]({{ site.baseurl }}{% post_url 2019-04-08-setup-go-on-mac %}).
+You can find information how to enable testing constrains in VS Code if you check [Setup Go Dev environment]({{ site.baseurl }}{% post_url 2019-04-08-setup-go-on-mac %}) post.
 
 ## Disable test caching
 
@@ -173,3 +173,5 @@ The idiomatic way to disable test caching explicitly
 is to use `-count=1`:
 
     go test -count=1
+
+Happy skipping!
