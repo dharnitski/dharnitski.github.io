@@ -46,9 +46,11 @@ Create workspace's `src` and `bin` directories:
     mkdir -p $(go env GOPATH)/src
     mkdir -p $(go env GOPATH)/bin
 
-Add the workspace's `bin` subdirectory to your `$PATH`:
+Add the workspace's `bin` subdirectory to your `$PATH` env variable. To keep `$PATH` updated after conole restart it has to be added to `~/.bash_profile` file:
 
     export PATH=$PATH:$(go env GOPATH)/bin
+
+Restart console.
 
 ## Install critical Go packages
 
@@ -106,7 +108,7 @@ VS Code settings explained:
 * `files.autoSave` controls if editor [automatically saves](https://code.visualstudio.com/docs/editor/codebasics#_save-auto-save) "dirty files". `afterDelay` saves file after short delay which is equal to 1s by default. This setting is important because many VS Code plugins uses file save event as a trigger. With this setting we control for example how often we run our unit tests. Enable it if you see the benefits to get test results and code coverage as fast as every second.
 * `editor.formatOnSave` runs Go formatter (`goreturns` by default) for just saved files. Should be disabled if `files.autoSave` enabled to avoid not expected code modifications while we are in the middle of writing code. You still can use VS Code key shortcut <kbd>Shift</kbd> + <kbd>Option</kbd> + <kbd>F</kbd> to format code on demand.
 * `go.testOnSave` and `go.coverOnSave` triggers tests execution and renders tests coverage. These settings are essential part of TDD setup and work really good with `files.autoSave`.  
-* `go.testFlags` - flags to pass to `go test`. With these flags we can control what types of tests to run. It is good practice to run only unit tests by default as other types of tests are more expensive or not always reliable. Although, with proper setup we can run something like local DB integration tests safely. It is possible to filter tests using `go.testFlags` flag. I'm planning to describe that setup in separate post.
+* `go.testFlags` - flags to pass to `go test`. With these flags we can control what types of tests to run. It is good practice to run only unit tests by default as other types of tests are more expensive or not always reliable. Although, with proper setup we can run something like local DB integration tests safely. It is possible to filter tests using `go.testFlags` flag. Check [another article]({{ site.baseurl }}{% post_url 2019-04-29-skip-tests-in-go %}) in this blog that describes how to use flags for skipping tests.
 * `go.coverageDecorator` - this option controls how code coverage is displayed. Use your creativity to configure it as you like it. Settings in sample above highlight covered lines with blue color and uncovered lines left with yellowish block:
 
 ![Code Coverage](/assets/img/2019-04-08/coverage.png)

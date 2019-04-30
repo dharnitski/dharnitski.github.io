@@ -12,12 +12,12 @@ AWS CodeBuild supports many programming languages. For each Amazon recommends to
 
 If you follow page instructions, in 30 min you will get everything setup, and will have a compiled and deployed code. 
 
- You can continue working with CodeBuild using S3 bucket, but without much effort you can also connect CodeBuild to your source control repository. AWS has good [setup documentation for this process](http://docs.aws.amazon.com/codebuild/latest/userguide/how-to-create-pipeline.html#how-to-create-pipeline-add-test). 
+ You can continue working with CodeBuild using S3 bucket, but without much effort you can also connect CodeBuild to your source control repository. AWS has good [setup documentation for this process](http://docs.aws.amazon.com/codebuild/latest/userguide/how-to-create-pipeline.html#how-to-create-pipeline-add-test).
 
 This sample proves that AWS does work, but it wold be not fair to skip some areas where lightweight build tools like [Travis CI](https://travis-ci.org/) or [Circle CI](https://circleci.com/) do better job:
 
-* Nowadays many CI systems use push notifications and start builds immediately where when building With AWS CodePipeline there is about 30 sec delay between my GitHub commit push and pipeline start. The story is the same if code is moved to AWS CodeCommit. 
-* It is also common across other systems to push build results to GitHub. 
+* Nowadays many CI systems use push notifications and start builds immediately where when building With AWS CodePipeline there is about 30 sec delay between my GitHub commit push and pipeline start. The story is the same if code is moved to AWS CodeCommit.
+* It is also common across other systems to push build results to GitHub.
 * Build Process in mentioned CI systems is faster for such a simple project. When I measured the time, Docker image provisioning for AWS took 1 min 17 secs and compilation took 28 seconds.
 
 Anyway, we can continue. We just proved that Hello World works, now it is time to check something more complicated.
@@ -42,6 +42,7 @@ func main() {
 	fmt.Println(en.Region())
 }
 ```
+
 Everything works fine locally, but the build process fails when we try to build the code in CodeBuild:
 
 ```
@@ -92,6 +93,7 @@ func Find(lang string) (language.Region, language.Confidence) {
 	return en.Region()
 }
 ```
+
 Update the main file to use a new package:
 
 ```go
@@ -123,7 +125,7 @@ To troubleshoot, add two lines to `buildspec.yml` file to see why build fails:
 ```yml
       - echo CODEBUILD_SRC_DIR - $CODEBUILD_SRC_DIR
       - echo GOPATH - $GOPATH
-```      
+```
 
 When you check logs you should see something like this:
 
@@ -141,7 +143,7 @@ To fix the compilation error shown above we have to copy files into the right lo
       mkdir -p ${GOPATH}/src/${PACKAGE}
       cp -a ${CODEBUILD_SRC_DIR}/.  ${GOPATH}/src/${PACKAGE}
 
-After files are copied, we can use Go tools to compile the code. 
+After files are copied, we can use Go tools to compile the code.
 
 There is one caveat to that. CodeBuild runs every command in a separate shell against the root of the source code folder. That means that we cannot simply run `go build` as it will be executed against the original source code location. We also cannot set `cd` once and use it later, because every new command is executed in its own context. We have to set the current dir every time when we want to run the command against files in `$GOPATH` folder.
 

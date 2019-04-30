@@ -1,14 +1,14 @@
 # dharnitski.github.io
 
-Source code of my blog https://www.contributing.md/
+Source code of my blog <https://www.contributing.md/>
 
 ## Prerequisites
 
 For MacOS:
 
     brew install ruby
-    gem install bundler
-    bundle install
+    sudo gem install bundler
+    sudo bundle install
 
 ## Build and run the blog locally
 
