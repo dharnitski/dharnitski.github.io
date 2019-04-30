@@ -70,4 +70,6 @@ What we are doing here:
 * Generate Coverage - uses `go-acc` with default settings. File coverage is to be saved into `coverage.txt` file.
 * Publish Coverage to Coveralls.io - this command does what its name tells us. It requires Coveralls access token to be stored in `COVERALLS_TOKEN` CircleCI Environment Variable.
 
+You can find working project in [github](https://github.com/dharnitski/go-coverage-sample)
+
 Happy covering!
