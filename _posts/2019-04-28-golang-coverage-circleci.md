@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Skip tests in Go"
+title: "Code Coverage in Go"
 categories: 
 tags: Go TDD Coverage Coveralls CircleCI CI
 excerpt: Getting Golang code coverage and posting to Coveralls.io is simple. Or not?  
