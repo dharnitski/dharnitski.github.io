@@ -66,8 +66,7 @@ Cleaning up `$PATH` environment variable to be performed manually as described b
 ## Removing files manually
 
 * `/etc/paths.d/go` check if that file exists and remove. It is added by [macOS package](https://golang.org/dl/).
-* `/usr/local/go` check if that folder exists and remove. [macOS package]
-(https://golang.org/dl/) keeps Go files in that folder.
+* `/usr/local/go` check if that folder exists and remove. [macOS package](https://golang.org/dl/) keeps Go files in that folder.
 * Check `$PATH` for `*/go/bin`. That is a good hint find where Go is installed. Delete that `go` folder.
 * `$HOME/go` or `$GOPATH` - Go Workspace. **Important!** This folder may contain not pushed code in `/src` sub-folder. Be careful to not lost your work.  
 
