@@ -1,6 +1,6 @@
 # dharnitski.github.io
 
-Source code of my blog <https://www.dharnitski.com/blog/>
+Source code of my blog <https://blog.dharnitski.com/>
 
 ## Prerequisites
 
