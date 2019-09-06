@@ -1,6 +1,6 @@
 # dharnitski.github.io
 
-Source code of my blog <https://www.contributing.md/>
+Source code of my blog <https://www.dharnitski.com/blog/>
 
 ## Prerequisites
 
