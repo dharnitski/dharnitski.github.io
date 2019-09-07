@@ -70,6 +70,20 @@ What we are doing here:
 * Generate Coverage - uses `go-acc` with default settings. File coverage is to be saved into `coverage.txt` file.
 * Publish Coverage to Coveralls.io - this command does what its name tells us. It requires Coveralls access token to be stored in `COVERALLS_TOKEN` CircleCI Environment Variable.
 
+## -coverpkg flag
+
+Go `test` allows to specify packages we want to cover with tests with `-coverpkg` flag.
+
+Command below tests all packages, calculates coverage for all packages and saves results into `coverage.txt`
+
+    go test -coverpkg=./... -coverprofile=coverage.txt ./...
+
+The only problem with this command, it does not work for situation when there are several `main` packages in your codebase including `vendor` folder.
+
+You will know if that is the case for your project if you see an error similar to this one:
+
+    duplicate symbol main.main (types 1 and 1) in main and /Users/user/Library/Caches/go-build/e5/e53413e54e9e7e079307427e09f0d60657fc6a7179fa93196aee80b0bc550578-d(_go_.o)
+
 You can find working project in [github](https://github.com/dharnitski/go-coverage-sample)
 
 Happy covering!
