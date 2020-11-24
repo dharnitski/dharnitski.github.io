@@ -19,3 +19,7 @@ Script to start blog with debug info and unpublished posts:
 Open link in Browser:
 
     http://127.0.0.1:4000/
+
+## Start with docker
+
+    docker run -p 4000:4000 -v $(pwd):/site bretfisher/jekyll-serve
