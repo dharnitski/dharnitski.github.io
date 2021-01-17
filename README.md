@@ -7,8 +7,10 @@ Source code of my blog <https://blog.dharnitski.com/>
 For MacOS:
 
     brew install ruby
+    brew install rbenv
+    rbenv init
     sudo gem install bundler
-    sudo bundle install
+    bundler install
 
 ## Build and run the blog locally
 
