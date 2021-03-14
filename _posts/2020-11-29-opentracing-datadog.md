@@ -2,7 +2,7 @@
 layout: post
 title: "Golang APM with Opentracing and Datadog"
 categories: 
-tags: Tracing APM DataDog Opentracing
+tags: Tracing APM DataDog Opentracing Go
 excerpt: Opentracing is getting popular as a vendor-agnostic APM API for microservices. This article describes how to use it in Go service and with Datadog.
 ---
 
