@@ -7,9 +7,12 @@ Source code of my blog <https://blog.dharnitski.com/>
 For MacOS:
 
     brew install ruby
-    brew install rbenv
-    rbenv init
-    sudo gem install bundler
+
+update `.zshrc` - export PATH=/usr/local/Cellar/ruby/3.0.0_1/bin:$PATH
+
+restart terminal
+
+    gem install bundler
     bundler install
 
 ## Build and run the blog locally
